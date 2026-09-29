@@ -46,7 +46,11 @@ Panel {
   readonly property color appColor: "#168cfa"
   readonly property color kernelColor: "#f05a9d"
   readonly property color cacheColor: "#ffc11a"
-  readonly property color freeColor: Qt.rgba(barForeground.r, barForeground.g, barForeground.b, 0.22)
+  // Text on the popup takes the popup's own text colour. barForeground is
+  // tuned for the bar, and can be dark when the popup behind the text is
+  // dark too (a transparent bar over a light wallpaper).
+  readonly property color panelForeground: Color.popups.text
+  readonly property color freeColor: Qt.rgba(panelForeground.r, panelForeground.g, panelForeground.b, 0.22)
   readonly property color pressureColor: Color.accent
 
   readonly property var memorySegments: [
@@ -251,7 +255,7 @@ Panel {
               anchors.verticalCenter: pressureRing.verticalCenter
               anchors.verticalCenterOffset: -Style.space(4)
               text: root.totalBytes > 0 ? Math.round(root.pressurePercent) + "%" : "--"
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.space(25)
               font.bold: true
@@ -263,7 +267,7 @@ Panel {
               anchors.verticalCenter: pressureRing.verticalCenter
               anchors.verticalCenterOffset: Style.space(20)
               text: "PRESSURE"
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.caption
               font.bold: true
@@ -274,7 +278,7 @@ Panel {
               anchors.horizontalCenter: parent.horizontalCenter
               anchors.bottom: parent.bottom
               text: "PSI · 10 second average"
-              color: Qt.darker(root.barForeground, 1.5)
+              color: Qt.darker(root.panelForeground, 1.5)
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.caption
             }
@@ -335,7 +339,7 @@ Panel {
               anchors.verticalCenter: memoryRing.verticalCenter
               anchors.verticalCenterOffset: -Style.space(4)
               text: root.totalBytes > 0 ? Math.round(root.usedPercent) + "%" : "--"
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.space(25)
               font.bold: true
@@ -347,7 +351,7 @@ Panel {
               anchors.verticalCenter: memoryRing.verticalCenter
               anchors.verticalCenterOffset: Style.space(20)
               text: "MEMORY"
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.caption
               font.bold: true
@@ -360,7 +364,7 @@ Panel {
               text: root.totalBytes > 0
                 ? root.formatBytes(root.usedBytes) + " of " + root.formatBytes(root.totalBytes)
                 : (root.memoryError !== "" ? root.memoryError : "Reading memory…")
-              color: Qt.darker(root.barForeground, 1.5)
+              color: Qt.darker(root.panelForeground, 1.5)
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.caption
             }
@@ -370,7 +374,7 @@ Panel {
         Rectangle {
           width: parent.width
           height: Math.max(1, Style.space(1))
-          color: root.barForeground
+          color: root.panelForeground
           opacity: 0.12
         }
 
@@ -396,7 +400,7 @@ Panel {
               anchors.leftMargin: Style.space(16)
               anchors.verticalCenter: parent.verticalCenter
               text: modelData.label
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
             }
@@ -405,7 +409,7 @@ Panel {
               anchors.right: parent.right
               anchors.verticalCenter: parent.verticalCenter
               text: root.formatBytes(modelData.value)
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
               font.bold: true
@@ -417,7 +421,7 @@ Panel {
         Rectangle {
           width: parent.width
           height: Math.max(1, Style.space(1))
-          color: root.barForeground
+          color: root.panelForeground
           opacity: 0.12
         }
 
@@ -460,7 +464,7 @@ Panel {
           text: root.processError !== ""
             ? root.processError
             : (root.processLoading ? "Reading process memory…" : "No process memory data")
-          color: Qt.darker(root.barForeground, 1.35)
+          color: Qt.darker(root.panelForeground, 1.35)
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.body
           horizontalAlignment: Text.AlignHCenter
@@ -496,7 +500,7 @@ Panel {
                 anchors.centerIn: parent
                 visible: processIcon.status !== Image.Ready
                 text: "󰣆"
-                color: root.barForeground
+                color: root.panelForeground
                 font.family: root.bar ? root.bar.fontFamily : Style.font.family
                 font.pixelSize: Style.font.body
               }
@@ -510,7 +514,7 @@ Panel {
               anchors.verticalCenter: parent.verticalCenter
               text: root.processDisplayName(modelData.name)
                 + (Number(modelData.processCount || 0) > 1 ? "  ·  " + modelData.processCount : "")
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
               elide: Text.ElideRight
@@ -522,7 +526,7 @@ Panel {
               anchors.verticalCenter: parent.verticalCenter
               width: Style.space(56)
               text: Number(modelData.percent || 0).toFixed(1) + "%"
-              color: Qt.darker(root.barForeground, 1.25)
+              color: Qt.darker(root.panelForeground, 1.25)
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
               horizontalAlignment: Text.AlignRight
@@ -534,7 +538,7 @@ Panel {
               anchors.verticalCenter: parent.verticalCenter
               width: Style.space(82)
               text: root.formatBytes(modelData.rssBytes)
-              color: root.barForeground
+              color: root.panelForeground
               font.family: root.bar ? root.bar.fontFamily : Style.font.family
               font.pixelSize: Style.font.body
               font.bold: true
@@ -546,7 +550,7 @@ Panel {
         Rectangle {
           width: parent.width
           height: Math.max(1, Style.space(1))
-          color: root.barForeground
+          color: root.panelForeground
           opacity: 0.12
         }
 
@@ -558,7 +562,7 @@ Panel {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             text: "Swap in"
-            color: root.barForeground
+            color: root.panelForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
           }
@@ -567,7 +571,7 @@ Panel {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             text: root.formatRate(root.swapInBytesPerSecond)
-            color: root.barForeground
+            color: root.panelForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
             font.bold: true
@@ -582,7 +586,7 @@ Panel {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             text: "Swap out"
-            color: root.barForeground
+            color: root.panelForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
           }
@@ -591,7 +595,7 @@ Panel {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             text: root.formatRate(root.swapOutBytesPerSecond)
-            color: root.barForeground
+            color: root.panelForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
             font.bold: true
@@ -601,7 +605,7 @@ Panel {
         Rectangle {
           width: parent.width
           height: Math.max(1, Style.space(1))
-          color: root.barForeground
+          color: root.panelForeground
           opacity: 0.12
         }
 
@@ -625,7 +629,7 @@ Panel {
             text: root.swapTotalBytes > 0
               ? root.formatBytes(root.swapUsedBytes) + " of " + root.formatBytes(root.swapTotalBytes)
               : "Not configured"
-            color: root.barForeground
+            color: root.panelForeground
             font.family: root.bar ? root.bar.fontFamily : Style.font.family
             font.pixelSize: Style.font.body
             font.bold: true
@@ -635,7 +639,7 @@ Panel {
         Text {
           width: parent.width
           text: "Processes are grouped RSS · R to refresh"
-          color: Qt.darker(root.barForeground, 1.5)
+          color: Qt.darker(root.panelForeground, 1.5)
           font.family: root.bar ? root.bar.fontFamily : Style.font.family
           font.pixelSize: Style.font.caption
           horizontalAlignment: Text.AlignHCenter
